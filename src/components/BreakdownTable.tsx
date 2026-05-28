@@ -4,6 +4,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { calculateReceiptTotals, calculateGrandTotals } from '../utils/calculations';
 
 export function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
@@ -12,10 +13,9 @@ export function cn(...inputs: (string | undefined | null | false)[]) {
 interface BreakdownTableProps {
   project: Project;
   updateProject: (p: Project) => void;
-  isExporting?: boolean;
 }
 
-export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateProject, isExporting = false }) => {
+export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateProject }) => {
   const [newTag, setNewTag] = useState('');
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -114,152 +114,10 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
     updateReceipt({ ...receipt, items: receipt.items.map(i => i.id === itemId ? { ...i, name } : i) });
   };
 
-  // Calculations
-  const calculateReceiptTotals = (receipt: Receipt) => {
-    const totals: Record<string, number> = {};
-    project.friends.forEach(f => totals[f.id] = 0);
-
-    receipt.items.forEach(item => {
-      project.friends.forEach(f => {
-        const amt = item.splits[f.id] || 0;
-        totals[f.id] += amt;
-      });
-    });
-
-    const taxAmounts: Record<string, number> = {};
-    project.friends.forEach(f => {
-      const tax = totals[f.id] * (receipt.taxPercentage / 100);
-      taxAmounts[f.id] = tax;
-      totals[f.id] += tax;
-    });
-
-    return { totals, taxAmounts };
-  };
-
-  const calculateGrandTotals = () => {
-    const grandTotals: Record<string, number> = {};
-    project.friends.forEach(f => grandTotals[f.id] = 0);
-    project.receipts.forEach(r => {
-      const { totals } = calculateReceiptTotals(r);
-      project.friends.forEach(f => grandTotals[f.id] += totals[f.id]);
-    });
-    return grandTotals;
-  };
-
-  const grandTotals = calculateGrandTotals();
+  const grandTotals = calculateGrandTotals(project.receipts, project.friends);
   const allTags = Array.from(new Set([...project.friends.map(f => f.name), ...(project.tags || [])]));
 
-  // ─── EXPORT / READ-ONLY VIEW ──────────────────────────────────────────────
-  if (isExporting) {
-    return (
-      <div style={{ fontFamily: 'Inter, sans-serif', color: '#e4e4e7', background: '#09090b', padding: '24px', minWidth: '400px' }}>
-        {/* Header */}
-        <div style={{ marginBottom: '16px' }}>
-          <div style={{ fontSize: '20px', fontWeight: 300, letterSpacing: '-0.5px', color: '#f4f4f5' }}>{project.name}</div>
-          <div style={{ fontSize: '12px', color: '#71717a', marginTop: '2px' }}>
-            {new Date(project.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-          </div>
-          {allTags.length > 0 && (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
-              {allTags.map((tag, i) => (
-                <span key={i} style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '1px', background: '#27272a', color: '#a1a1aa', padding: '3px 7px', borderRadius: '4px' }}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
 
-        {/* Table */}
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-          <thead>
-            <tr style={{ background: '#18181b' }}>
-              <th style={{ padding: '10px 12px', textAlign: 'left', color: '#a1a1aa', fontWeight: 500, borderBottom: '1px solid #3f3f46', minWidth: '160px' }}>
-                Item
-              </th>
-              {project.friends.map(f => (
-                <th key={f.id} style={{ padding: '10px 12px', textAlign: 'center', color: '#e4e4e7', fontWeight: 500, borderBottom: '1px solid #3f3f46', minWidth: '100px', borderLeft: '1px solid #27272a' }}>
-                  {f.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {project.receipts.map(receipt => {
-              const { totals, taxAmounts } = calculateReceiptTotals(receipt);
-              const hasTax = receipt.taxPercentage > 0;
-              return (
-                <React.Fragment key={receipt.id}>
-                  {/* Receipt header */}
-                  <tr style={{ background: '#18181b' }}>
-                    <td colSpan={project.friends.length + 1} style={{ padding: '8px 12px', color: '#a1a1aa', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #3f3f46' }}>
-                      {receipt.name || 'Unnamed'}
-                    </td>
-                  </tr>
-                  {/* Items */}
-                  {receipt.items.map(item => {
-                    const hasValue = project.friends.some(f => (item.splits[f.id] || 0) > 0);
-                    if (!hasValue && !item.name) return null;
-                    return (
-                      <tr key={item.id} style={{ background: '#09090b', borderBottom: '1px solid #27272a' }}>
-                        <td style={{ padding: '8px 12px 8px 20px', color: '#d4d4d8' }}>
-                          {item.name || '—'}
-                        </td>
-                        {project.friends.map(f => (
-                          <td key={f.id} style={{ padding: '8px 12px', textAlign: 'center', color: '#a1a1aa', fontFamily: 'monospace', borderLeft: '1px solid #27272a' }}>
-                            {item.splits[f.id] ? item.splits[f.id].toFixed(2) : '—'}
-                          </td>
-                        ))}
-                      </tr>
-                    );
-                  })}
-                  {/* Tax row — only if tax > 0 */}
-                  {hasTax && (
-                    <tr style={{ background: '#111113', borderBottom: '1px solid #27272a' }}>
-                      <td style={{ padding: '6px 12px 6px 20px', color: '#71717a', fontSize: '11px' }}>
-                        Tax ({receipt.taxPercentage}%)
-                      </td>
-                      {project.friends.map(f => (
-                        <td key={f.id} style={{ padding: '6px 12px', textAlign: 'center', color: '#71717a', fontFamily: 'monospace', fontSize: '11px', borderLeft: '1px solid #27272a' }}>
-                          {taxAmounts[f.id] > 0 ? taxAmounts[f.id].toFixed(2) : '—'}
-                        </td>
-                      ))}
-                    </tr>
-                  )}
-                  {/* Receipt total */}
-                  <tr style={{ background: '#18181b', borderBottom: '3px solid #27272a' }}>
-                    <td style={{ padding: '8px 12px', color: '#e4e4e7', fontWeight: 500 }}>Total</td>
-                    {project.friends.map(f => (
-                      <td key={f.id} style={{ padding: '8px 12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 500, borderLeft: '1px solid #27272a' }}>
-                        {totals[f.id] > 0 ? totals[f.id].toFixed(2) : '—'}
-                      </td>
-                    ))}
-                  </tr>
-                </React.Fragment>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr style={{ background: '#27272a' }}>
-              <td style={{ padding: '12px', color: '#f4f4f5', fontWeight: 600 }}>Sub Total</td>
-              {project.friends.map(f => (
-                <td key={f.id} style={{ padding: '12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 600, fontSize: '15px', borderLeft: '1px solid #3f3f46' }}>
-                  {grandTotals[f.id] > 0 ? grandTotals[f.id].toFixed(2) : '—'}
-                </td>
-              ))}
-            </tr>
-          </tfoot>
-        </table>
-
-        {/* Footer */}
-        <div style={{ marginTop: '16px', textAlign: 'center', color: '#52525b', fontSize: '10px' }}>
-          Made with &lt;3 in KL by @Hazriq
-        </div>
-      </div>
-    );
-  }
-
-  // ─── EDIT VIEW ────────────────────────────────────────────────────────────
   return (
     <div className="w-full">
       <div className="flex flex-col mb-6">
@@ -331,7 +189,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
           </thead>
           <tbody className="text-sm">
             {project.receipts.map(receipt => {
-              const { totals, taxAmounts } = calculateReceiptTotals(receipt);
+              const { totals, taxAmounts } = calculateReceiptTotals(receipt, project.friends);
               return (
                 <React.Fragment key={receipt.id}>
                   {/* Receipt Header */}
