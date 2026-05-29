@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { toPng } from 'html-to-image';
-import { useProject } from '../store/ProjectContext';
+import { useProject } from '../store/useProject';
 import { ArrowLeft, Camera, Download } from 'lucide-react';
 import { BreakdownTable } from './BreakdownTable';
 import { ValidationTable } from './ValidationTable';

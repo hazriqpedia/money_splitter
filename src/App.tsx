@@ -1,5 +1,6 @@
 
-import { ProjectProvider, useProject } from './store/ProjectContext';
+import { ProjectProvider } from './store/ProjectContext';
+import { useProject } from './store/useProject';
 import { Dashboard } from './components/Dashboard';
 import { SplitView } from './components/SplitView';
 

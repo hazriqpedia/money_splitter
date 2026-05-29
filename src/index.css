@@ -12,14 +12,85 @@
   --color-success: #22c55e;
 }
 
+/* iOS Safari: prevent automatic text size adjustment on orientation change */
+html {
+  color-scheme: dark;
+  background-color: #09090b; /* flash-prevention fallback only — real background is ::before */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Definitive Chrome GPU compositing fix.
+   position:fixed elements are always promoted to a dedicated GPU layer in Chrome —
+   they are never split into tiles and never rebuilt on interaction (focus, input, etc).
+   z-index:-1 places it behind all document content but above html's own background.
+   Body must be transparent so this layer shows through. */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-color: #09090b;
+  z-index: -1;
+  pointer-events: none;
+}
+
 body {
-  background-color: #09090b; /* Very dark background */
+  min-height: 100vh;
   color: #fafafa;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Minimalist scrollbar */
+/* Remove blue tap flash on iOS Safari */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove Safari's default input appearance (rounded corners, inner shadow) */
+input,
+textarea,
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Fix placeholder opacity — Safari renders placeholders at ~54% opacity by default */
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+}
+
+/* Hide number input spinners */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Override Safari autofill highlight colour to match dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #09090b inset !important;
+  -webkit-text-fill-color: #e4e4e7 !important;
+  caret-color: #e4e4e7;
+}
+
+/* Faster tap response on iOS — removes 300 ms delay */
+button,
+[role='button'],
+input,
+select,
+textarea,
+a {
+  touch-action: manipulation;
+}
+
+/* Minimalist scrollbar (Chrome/Edge only — Safari does not support this) */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

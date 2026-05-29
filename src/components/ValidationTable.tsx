@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Project, Receipt } from '../types';
 import { Check } from 'lucide-react';
 
@@ -64,22 +65,24 @@ export const ValidationTable: React.FC<ValidationTableProps> = ({ project, updat
                     <td className={`p-3 text-right font-mono ${isMatch ? 'text-green-500' : 'text-red-400'}`}>
                       {calculated.toFixed(2)}
                     </td>
-                    <td className={`p-3 text-right font-mono text-xs ${isMatch ? 'text-zinc-500' : 'text-red-400'} flex items-center justify-end gap-2`}>
-                      <span>{isMatch ? '0.00' : (diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2))}</span>
-                      {!isMatch && (
-                        <button
-                          onClick={() => {
-                            updateProject({
-                              ...project,
-                              receipts: project.receipts.map(r => r.id === receipt.id ? { ...r, expectedTotal: calculated } : r)
-                            });
-                          }}
-                          className="p-1 hover:bg-zinc-800 rounded text-zinc-400 hover:text-green-400 transition-colors"
-                          title="Auto-fill Expected"
-                        >
-                          <Check size={14} />
-                        </button>
-                      )}
+                    <td className={`p-3 text-right font-mono text-xs ${isMatch ? 'text-zinc-500' : 'text-red-400'}`}>
+                      <div className="flex items-center justify-end gap-2">
+                        <span>{isMatch ? '0.00' : (diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2))}</span>
+                        {!isMatch && (
+                          <button
+                            onClick={() => {
+                              updateProject({
+                                ...project,
+                                receipts: project.receipts.map(r => r.id === receipt.id ? { ...r, expectedTotal: calculated } : r)
+                              });
+                            }}
+                            className="p-1 hover:bg-zinc-800 rounded text-zinc-400 hover:text-green-400 transition-colors"
+                            title="Auto-fill Expected"
+                          >
+                            <Check size={14} />
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

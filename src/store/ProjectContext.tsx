@@ -1,26 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Project } from '../types';
 import { v4 as uuidv4 } from 'uuid';
-
-interface ProjectContextType {
-  projects: Project[];
-  activeProject: Project | null;
-  createProject: (name: string) => void;
-  setActiveProject: (id: string | null) => void;
-  deleteProject: (id: string) => void;
-  importProject: (project: Project) => void;
-  updateProject: (project: Project) => void;
-}
-
-const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
-
-export const useProject = () => {
-  const context = useContext(ProjectContext);
-  if (!context) {
-    throw new Error('useProject must be used within a ProjectProvider');
-  }
-  return context;
-};
+import { ProjectContext } from './context';
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useState<Project[]>(() => {
@@ -67,7 +48,6 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const importProject = (project: Project) => {
-    // Basic validation
     if (!project.id || !project.name || !project.friends || !project.receipts) {
       alert("Invalid project file.");
       return;

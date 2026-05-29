@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import React from 'react';
-import { ProjectProvider, useProject } from './ProjectContext';
+import { ProjectProvider } from './ProjectContext';
+import { useProject } from './useProject';
 import type { Project } from '../types';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (

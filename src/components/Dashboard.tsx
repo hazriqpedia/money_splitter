@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useProject } from '../store/ProjectContext';
+import { useProject } from '../store/useProject';
 import { Plus, Download, Upload, Trash2 } from 'lucide-react';
 import type { Project } from '../types';
 
@@ -24,7 +24,7 @@ export const Dashboard = () => {
       try {
         const json = JSON.parse(event.target?.result as string);
         importProject(json as Project);
-      } catch (err) {
+      } catch {
         alert("Failed to parse JSON file.");
       }
     };
@@ -51,7 +51,7 @@ export const Dashboard = () => {
         <p className="text-zinc-500 text-sm">Split bills easily, no math degree required.</p>
       </div>
 
-      <div className="bg-[#09090b] rounded-2xl p-6 mb-12 border border-zinc-800/50">
+      <div className="rounded-2xl p-6 mb-12 border border-zinc-800/50">
         <form onSubmit={handleCreate} className="flex gap-3">
           <input
             type="text"

@@ -6,6 +6,7 @@
     "ms-vscode.vscode-typescript-next",
     "formulahendry.auto-rename-tag",
     "mhutchie.git-graph",
-    "usernamehw.errorlens"
+    "usernamehw.errorlens",
+    "anthropics.claude-code"
   ]
 }

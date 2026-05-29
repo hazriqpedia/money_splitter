@@ -17,9 +17,9 @@ A browser-only bill-splitting tool. No backend, no auth. Everything runs in Reac
 | `npm test` | Vitest in watch mode |
 | `npm run test:run` | Vitest single run (CI) |
 
-VS Code quick launch: `Cmd+Shift+P → Tasks: Run Task`:
-1. **Dev Server** — starts Vite (`:5173`), then run **Open Dev in Safari**
-2. **Preview Build** — builds + serves (`:4173`), then run **Open Preview in Safari**
+VS Code quick launch — two options:
+- **Run & Debug** (`Cmd+Shift+D`): select `Dev Server + Chrome` compound — starts Vite and opens Chrome with full source-map debugging attached
+- **Tasks** (`Cmd+Shift+P → Tasks: Run Task`): `Dev Server` + `Open Dev in Safari` if you prefer Safari; `Preview Build` for a production preview
 
 ## Stack
 

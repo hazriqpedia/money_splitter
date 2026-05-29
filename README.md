@@ -1,22 +1,32 @@
-# Money Splitter
+# Money Splitter — Free Bill Splitting App for Groups
 
-A minimal, no-login bill-splitting tool for groups. Designed for trips, dinners, and any shared expense where you need to know exactly who owes what — without the spreadsheet chaos.
+> Split restaurant bills, trip expenses, and shared costs by item — no sign-up, no server, no spreadsheet chaos.
 
-Everything runs in the browser. No accounts, no servers, no data leaving your machine.
+A minimal, privacy-first bill splitter that runs entirely in your browser. Perfect for dinners, road trips, holidays, and any group outing where you need to know exactly who owes what.
+
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
-## What it does
+## Features
 
-**Projects** are the top-level container — one per trip, event, or outing. Each project holds a list of friends and one or more receipts.
+- **Item-by-item splitting** — assign each line item to one person, split it evenly, or use any custom split across friends
+- **Tax support** — set a tax percentage per receipt; it's applied proportionally on top of each person's subtotal
+- **Live validation** — enter the printed total from a physical receipt and the app flags any discrepancy in real time
+- **PNG export** — generates a clean, shareable summary image ready to paste into a group chat
+- **JSON import / export** — save a project as JSON, share it, or reload it later
+- **Fully offline** — no accounts, no backend, no data leaving your device; everything persists to `localStorage`
+- **Multi-receipt projects** — group multiple receipts under one project (e.g. all spending across a weekend trip)
 
-**Receipts** are broken down item by item. You assign each item's cost across friends however you like (split evenly, one person pays, or any custom split). Tax is applied as a percentage on top of each person's subtotal.
+---
 
-**Validation** runs live on the side — enter the total printed on your physical receipt and the app flags any discrepancy so you catch data-entry mistakes before settling up.
+## Demo
 
-**Export** generates a clean PNG summary of the entire split, ready to share in a group chat.
-
-**Persistence** is local — projects are saved to `localStorage` and survive page refreshes. You can also export any project as a JSON file and re-import it later or share it with someone else.
+> Add a screenshot or GIF here — e.g. `![Money Splitter screenshot](docs/screenshot.png)`
 
 ---
 
@@ -26,36 +36,36 @@ Everything runs in the browser. No accounts, no servers, no data leaving your ma
 # Install dependencies
 npm install
 
-# Start dev server
+# Start dev server (http://localhost:5173)
 npm run dev
 ```
 
-Open `http://localhost:5173`. Create a project, add friends, add receipts, fill in amounts. Hit **Split Project!** to export a PNG.
+Create a project → add friends → add receipts → assign item costs → click **Split Project!** to export a PNG.
 
 ```bash
 # Production build
 npm run build
 
-# Preview the build
+# Preview the production build
 npm run preview
 ```
 
-No environment variables or backend setup required.
+No environment variables or backend setup needed.
 
 ---
 
 ## Tech stack
 
-| Layer | Choice |
-|---|---|
-| Framework | React 19 |
-| Language | TypeScript 6 |
-| Build tool | Vite 8 |
-| Styling | Tailwind CSS v4 |
-| Icons | lucide-react |
+| Layer           | Choice                |
+| --------------- | --------------------- |
+| Framework       | React 19              |
+| Language        | TypeScript 6          |
+| Build tool      | Vite 8                |
+| Styling         | Tailwind CSS v4       |
+| Icons           | lucide-react          |
 | Class utilities | clsx + tailwind-merge |
-| PNG export | dom-to-image-more |
-| ID generation | uuid |
+| PNG export      | dom-to-image-more     |
+| ID generation   | uuid                  |
 
 ---
 
@@ -70,7 +80,7 @@ src/
 └── components/
     ├── Dashboard.tsx         # Project list, create / import / export JSON
     ├── SplitView.tsx         # Active project editor shell + PNG export trigger
-    ├── BreakdownTable.tsx    # Main editable split table with tax calculation
+    ├── BreakdownTable.tsx    # Editable split table with per-item cost assignment + tax
     ├── ValidationTable.tsx   # Per-receipt expected vs. calculated diff panel
     └── ExportView.tsx        # Off-screen PNG-optimised render (inline styles only)
 ```
@@ -86,12 +96,18 @@ Project
         └── items: Item[]        // { id, name, splits: { friendId → amount } }
 ```
 
-State lives in `ProjectContext`. All mutations go through `updateProject`, which writes to `localStorage` on every change via a `useEffect`.
+State lives in `ProjectContext`. All mutations go through `updateProject`, which writes to `localStorage` on every change.
 
 ### Export flow
 
-`ExportView` is always rendered off-screen (absolute, `left: -9999px`). When the user clicks **Split Project!**, `SplitView` calls `domtoimage.toPng()` on the hidden ref and triggers a browser download. Inline styles are used throughout `ExportView` because CSS classes are not reliably captured by `dom-to-image-more`.
+`ExportView` is always rendered off-screen (`left: -9999px`). When the user clicks **Split Project!**, `SplitView` calls `domtoimage.toPng()` on the hidden ref and triggers a browser download. Inline styles are used throughout `ExportView` because CSS utility classes are not reliably captured by `dom-to-image-more`.
 
 ---
 
-Made with &lt;3 in KL by @Hazriq
+## Contributing
+
+Issues and PRs are welcome. Please keep changes minimal and consistent with the existing dark, no-frills design language.
+
+---
+
+Made with &lt;3 in KL by [@Hazriq](https://github.com/hazriqpedia)

@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import type { Project, Receipt, Item } from '../types';
 import { Plus, Trash2 } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import { calculateReceiptTotals, calculateGrandTotals } from '../utils/calculations';
-
-export function cn(...inputs: (string | undefined | null | false)[]) {
-  return twMerge(clsx(inputs));
-}
 
 interface BreakdownTableProps {
   project: Project;
