@@ -86,14 +86,14 @@ export const SplitView = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-8 overflow-x-auto">
-        <div className="flex justify-center gap-8 items-start min-w-max mx-auto max-w-[1600px]">
+      <main className="flex-1 p-8 flex gap-8 items-start justify-center">
+        <div className="overflow-x-auto">
           <div className="bg-[#09090b] p-4 rounded-2xl border border-zinc-800 overflow-hidden shadow-2xl">
             <BreakdownTable project={activeProject} updateProject={updateProject} />
           </div>
-          <div className="w-[28rem] sticky top-36">
-            <ValidationTable project={activeProject} updateProject={updateProject} />
-          </div>
+        </div>
+        <div className="w-[28rem] flex-shrink-0 sticky top-36 self-start">
+          <ValidationTable project={activeProject} updateProject={updateProject} />
         </div>
       </main>
     </div>
