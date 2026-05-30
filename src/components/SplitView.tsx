@@ -57,7 +57,7 @@ export const SplitView = () => {
       <ExportView project={activeProject} exportRef={exportRef} />
 
       {/* Top Navbar */}
-      <header className="border-b border-zinc-800/60 px-6 py-4 flex justify-between items-center sticky top-0 z-10 bg-[#09090b]/80 backdrop-blur-md">
+      <header className="border-b border-zinc-800/60 px-6 py-4 flex justify-between items-center sticky top-14 z-10 bg-[#09090b]/80 backdrop-blur-md">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setActiveProject(null)}
@@ -91,7 +91,7 @@ export const SplitView = () => {
           <div className="bg-[#09090b] p-4 rounded-2xl border border-zinc-800 overflow-hidden shadow-2xl">
             <BreakdownTable project={activeProject} updateProject={updateProject} />
           </div>
-          <div className="w-[28rem] sticky top-8">
+          <div className="w-[28rem] sticky top-36">
             <ValidationTable project={activeProject} updateProject={updateProject} />
           </div>
         </div>

@@ -43,11 +43,8 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 pt-20">
+    <div className="max-w-4xl mx-auto p-8 pt-10">
       <div className="text-center mb-16">
-        <h1 className="text-3xl font-light text-zinc-100 tracking-tight mb-2">
-          Money Splitter
-        </h1>
         <p className="text-zinc-500 text-sm">Split bills easily, no math degree required.</p>
       </div>
 

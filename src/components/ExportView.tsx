@@ -35,6 +35,12 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
         boxSizing: 'border-box',
       }}
     >
+      {/* Brand */}
+      <div style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#52525b', marginBottom: '20px', fontWeight: 600 }}>
+        bill-splitter
+        <span style={{ fontStyle: 'italic', letterSpacing: '0.5px', color: '#3f3f46', fontWeight: 400, textTransform: 'none', marginLeft: '8px' }}>· by hzrq</span>
+      </div>
+
       {/* Header */}
       <div style={{ marginBottom: '20px' }}>
         <div style={{ fontSize: '20px', fontWeight: 300, letterSpacing: '-0.5px', color: '#f4f4f5' }}>
@@ -112,7 +118,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
                 )}
                 {/* Receipt total */}
                 <tr style={{ background: '#18181b', borderBottom: '3px solid #27272a' }}>
-                  <td style={{ padding: '8px 12px', color: '#e4e4e7', fontWeight: 500 }}>Total</td>
+                  <td style={{ padding: '8px 12px', color: '#e4e4e7', fontWeight: 500 }}>Sub Total</td>
                   {project.friends.map(f => (
                     <td key={f.id} style={{ padding: '8px 12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 500, borderLeft: '1px solid #27272a' }}>
                       {totals[f.id] > 0 ? totals[f.id].toFixed(2) : '—'}
@@ -125,7 +131,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
         </tbody>
         <tfoot>
           <tr style={{ background: '#27272a' }}>
-            <td style={{ padding: '14px 12px', color: '#f4f4f5', fontWeight: 600, fontSize: '14px' }}>Sub Total</td>
+            <td style={{ padding: '14px 12px', color: '#f4f4f5', fontWeight: 600, fontSize: '14px' }}>Total</td>
             {project.friends.map(f => (
               <td key={f.id} style={{ padding: '14px 12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 700, fontSize: '15px', borderLeft: '1px solid #3f3f46' }}>
                 {grandTotals[f.id] > 0 ? grandTotals[f.id].toFixed(2) : '—'}
@@ -135,10 +141,6 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
         </tfoot>
       </table>
 
-      {/* Footer */}
-      <div style={{ marginTop: '16px', textAlign: 'center', color: '#3f3f46', fontSize: '10px' }}>
-        Made with &lt;3 in KL by @Hazriq
-      </div>
     </div>
     </div>
   );

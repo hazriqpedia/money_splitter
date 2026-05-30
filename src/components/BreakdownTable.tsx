@@ -268,7 +268,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
 
                   {/* Total Row */}
                   <tr className="border-b-4 border-zinc-800 bg-zinc-900/60">
-                    <td className="p-3 pl-6 border-r border-zinc-800/50 text-zinc-300 font-medium">Total</td>
+                    <td className="p-3 pl-6 border-r border-zinc-800/50 text-zinc-300 font-medium">Sub Total</td>
                     {project.friends.map(f => (
                       <td key={f.id} className="p-3 text-center border-r border-zinc-800/50 font-mono text-zinc-200">
                         {totals[f.id] > 0 ? totals[f.id].toFixed(2) : '–'}
@@ -282,7 +282,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
           </tbody>
           <tfoot>
             <tr className="bg-zinc-800 text-zinc-100 font-medium text-base">
-              <td className="p-4 rounded-bl-xl border-r border-zinc-700">Sub Total</td>
+              <td className="p-4 rounded-bl-xl border-r border-zinc-700">Total</td>
               {project.friends.map(f => (
                 <td key={f.id} className="p-4 text-center border-r border-zinc-700 font-mono">
                   {grandTotals[f.id] > 0 ? grandTotals[f.id].toFixed(2) : '–'}
