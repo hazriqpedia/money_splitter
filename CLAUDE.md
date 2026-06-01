@@ -95,6 +95,16 @@ Other context methods: `createProject(name)`, `deleteProject(id)`, `importProjec
 - **Inline styles in ExportView**: `ExportView` must use only inline styles — CSS utility classes are not reliably captured by `dom-to-image-more`. Never add Tailwind classes there.
 - **Calculations are pure**: `calculateReceiptTotals` and `calculateGrandTotals` live in `src/utils/calculations.ts`. Both `BreakdownTable` and `ExportView` import from there — do not duplicate the logic.
 
+## Development workflow
+
+After completing any feature, bug fix, or non-trivial change:
+
+1. **Run tests** — `npm run test:run`. All tests must pass before considering the task done.
+2. **Run lint** — `npm run lint`. Fix any lint errors before finishing.
+3. **TypeScript check** — `npm run build` catches type errors. Run it if you touched types or added new files.
+
+Never report a task as complete if tests or lint are failing.
+
 ## Things to watch out for
 
 - `dom-to-image-more` has no TypeScript types — `@ts-ignore` is intentional on its import and usage.

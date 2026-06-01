@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateReceiptTotals, calculateGrandTotals } from './calculations';
+import { calculateReceiptTotals, calculateGrandTotals, calculateReceiptCalculatedTotal } from './calculations';
 import type { Friend, Receipt } from '../types';
 
 const friends: Friend[] = [
@@ -101,5 +101,75 @@ describe('calculateGrandTotals', () => {
     ];
     const totals = calculateGrandTotals(receipts, friends);
     expect(totals.b).toBe(0);
+  });
+
+  it('handles fractional splits across three receipts', () => {
+    const receipts: Receipt[] = [
+      receipt({ id: 'r1', items: [{ id: 'i1', name: 'A', splits: { a: 3.33, b: 3.34 } }] }),
+      receipt({ id: 'r2', items: [{ id: 'i2', name: 'B', splits: { a: 10, b: 5 } }] }),
+      receipt({ id: 'r3', taxPercentage: 10, items: [{ id: 'i3', name: 'C', splits: { a: 20, b: 20 } }] }),
+    ];
+    const totals = calculateGrandTotals(receipts, friends);
+    expect(totals.a).toBeCloseTo(3.33 + 10 + 22);
+    expect(totals.b).toBeCloseTo(3.34 + 5 + 22);
+  });
+});
+
+describe('calculateReceiptCalculatedTotal', () => {
+  it('returns 0 for a receipt with no items', () => {
+    expect(calculateReceiptCalculatedTotal(receipt())).toBe(0);
+  });
+
+  it('sums all splits across all friends', () => {
+    const r = receipt({
+      items: [
+        { id: 'i1', name: 'Pizza', splits: { a: 10, b: 20 } },
+        { id: 'i2', name: 'Drinks', splits: { a: 5, b: 5 } },
+      ],
+    });
+    expect(calculateReceiptCalculatedTotal(r)).toBeCloseTo(40);
+  });
+
+  it('applies tax on top of the total splits', () => {
+    const r = receipt({
+      taxPercentage: 10,
+      items: [{ id: 'i1', name: 'Food', splits: { a: 50, b: 50 } }],
+    });
+    expect(calculateReceiptCalculatedTotal(r)).toBeCloseTo(110);
+  });
+
+  it('handles fractional tax percentage (8.5%)', () => {
+    const r = receipt({
+      taxPercentage: 8.5,
+      items: [{ id: 'i1', name: 'Lunch', splits: { a: 100 } }],
+    });
+    expect(calculateReceiptCalculatedTotal(r)).toBeCloseTo(108.5);
+  });
+
+  it('handles items with empty splits', () => {
+    const r = receipt({
+      items: [{ id: 'i1', name: 'Empty', splits: {} }],
+    });
+    expect(calculateReceiptCalculatedTotal(r)).toBe(0);
+  });
+
+  it('matches the sum of per-friend totals from calculateReceiptTotals', () => {
+    const r = receipt({
+      taxPercentage: 15,
+      items: [
+        { id: 'i1', name: 'A', splits: { a: 30, b: 20 } },
+        { id: 'i2', name: 'B', splits: { a: 10, b: 40 } },
+      ],
+    });
+    const { totals } = calculateReceiptTotals(r, friends);
+    const perFriendSum = Object.values(totals).reduce((s, v) => s + v, 0);
+    expect(calculateReceiptCalculatedTotal(r)).toBeCloseTo(perFriendSum);
+  });
+
+  it('returns correct total for a single-friend single-item receipt', () => {
+    const r = receipt({
+      items: [{ id: 'i1', name: 'Solo', splits: { a: 42.50 } }],
+    });
+    expect(calculateReceiptCalculatedTotal(r)).toBeCloseTo(42.50);
   });
 });

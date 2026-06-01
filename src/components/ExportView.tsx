@@ -64,11 +64,11 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
         <thead>
           <tr style={{ background: '#18181b' }}>
-            <th style={{ padding: '10px 12px', textAlign: 'left', color: '#a1a1aa', fontWeight: 500, borderBottom: '1px solid #3f3f46', minWidth: '160px' }}>
+            <th style={{ padding: '6px 12px', textAlign: 'left', color: '#a1a1aa', fontWeight: 500, borderBottom: '1px solid #3f3f46', minWidth: '160px' }}>
               Item
             </th>
             {project.friends.map(f => (
-              <th key={f.id} style={{ padding: '10px 12px', textAlign: 'center', color: '#e4e4e7', fontWeight: 500, borderBottom: '1px solid #3f3f46', minWidth: '100px', borderLeft: '1px solid #27272a' }}>
+              <th key={f.id} style={{ padding: '6px 12px', textAlign: 'center', color: '#e4e4e7', fontWeight: 500, borderBottom: '1px solid #3f3f46', minWidth: '100px', borderLeft: '1px solid #27272a' }}>
                 {f.name}
               </th>
             ))}
@@ -82,7 +82,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
               <React.Fragment key={receipt.id}>
                 {/* Receipt label */}
                 <tr style={{ background: '#18181b' }}>
-                  <td colSpan={project.friends.length + 1} style={{ padding: '8px 12px', color: '#71717a', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #3f3f46' }}>
+                  <td colSpan={project.friends.length + 1} style={{ padding: '5px 12px', color: '#71717a', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #3f3f46' }}>
                     {receipt.name || 'Unnamed'}
                   </td>
                 </tr>
@@ -92,11 +92,11 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
                   if (!hasValue && !item.name) return null;
                   return (
                     <tr key={item.id} style={{ background: '#09090b', borderBottom: '1px solid #27272a' }}>
-                      <td style={{ padding: '8px 12px 8px 20px', color: '#d4d4d8' }}>
+                      <td style={{ padding: '4px 12px 4px 20px', color: '#d4d4d8' }}>
                         {item.name || '—'}
                       </td>
                       {project.friends.map(f => (
-                        <td key={f.id} style={{ padding: '8px 12px', textAlign: 'center', color: '#a1a1aa', fontFamily: 'monospace', borderLeft: '1px solid #27272a' }}>
+                        <td key={f.id} style={{ padding: '4px 12px', textAlign: 'center', color: '#a1a1aa', fontFamily: 'monospace', borderLeft: '1px solid #27272a' }}>
                           {item.splits[f.id] ? item.splits[f.id].toFixed(2) : '—'}
                         </td>
                       ))}
@@ -106,11 +106,11 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
                 {/* Tax */}
                 {hasTax && (
                   <tr style={{ background: '#111113', borderBottom: '1px solid #27272a' }}>
-                    <td style={{ padding: '6px 12px 6px 20px', color: '#52525b', fontSize: '11px' }}>
+                    <td style={{ padding: '3px 12px 3px 20px', color: '#52525b', fontSize: '11px' }}>
                       Tax ({receipt.taxPercentage}%)
                     </td>
                     {project.friends.map(f => (
-                      <td key={f.id} style={{ padding: '6px 12px', textAlign: 'center', color: '#52525b', fontFamily: 'monospace', fontSize: '11px', borderLeft: '1px solid #27272a' }}>
+                      <td key={f.id} style={{ padding: '3px 12px', textAlign: 'center', color: '#52525b', fontFamily: 'monospace', fontSize: '11px', borderLeft: '1px solid #27272a' }}>
                         {taxAmounts[f.id] > 0 ? taxAmounts[f.id].toFixed(2) : '—'}
                       </td>
                     ))}
@@ -118,9 +118,9 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
                 )}
                 {/* Receipt total */}
                 <tr style={{ background: '#18181b', borderBottom: '3px solid #27272a' }}>
-                  <td style={{ padding: '8px 12px', color: '#e4e4e7', fontWeight: 500 }}>Sub Total</td>
+                  <td style={{ padding: '3px 12px', color: '#71717a', fontWeight: 400, fontSize: '11px', fontStyle: 'italic' }}>Sub Total</td>
                   {project.friends.map(f => (
-                    <td key={f.id} style={{ padding: '8px 12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 500, borderLeft: '1px solid #27272a' }}>
+                    <td key={f.id} style={{ padding: '3px 12px', textAlign: 'center', color: '#71717a', fontFamily: 'monospace', fontWeight: 400, fontSize: '11px', borderLeft: '1px solid #27272a' }}>
                       {totals[f.id] > 0 ? totals[f.id].toFixed(2) : '—'}
                     </td>
                   ))}
@@ -131,9 +131,9 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
         </tbody>
         <tfoot>
           <tr style={{ background: '#27272a' }}>
-            <td style={{ padding: '14px 12px', color: '#f4f4f5', fontWeight: 600, fontSize: '14px' }}>Total</td>
+            <td style={{ padding: '9px 12px', color: '#f4f4f5', fontWeight: 600, fontSize: '14px' }}>Total</td>
             {project.friends.map(f => (
-              <td key={f.id} style={{ padding: '14px 12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 700, fontSize: '15px', borderLeft: '1px solid #3f3f46' }}>
+              <td key={f.id} style={{ padding: '9px 12px', textAlign: 'center', color: '#f4f4f5', fontFamily: 'monospace', fontWeight: 700, fontSize: '15px', borderLeft: '1px solid #3f3f46' }}>
                 {grandTotals[f.id] > 0 ? grandTotals[f.id].toFixed(2) : '—'}
               </td>
             ))}

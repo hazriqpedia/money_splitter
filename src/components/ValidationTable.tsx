@@ -1,5 +1,6 @@
 import React from 'react';
-import type { Project, Receipt } from '../types';
+import type { Project } from '../types';
+import { calculateReceiptCalculatedTotal } from '../utils/calculations';
 import { Check } from 'lucide-react';
 
 interface ValidationTableProps {
@@ -8,25 +9,13 @@ interface ValidationTableProps {
 }
 
 export const ValidationTable: React.FC<ValidationTableProps> = ({ project, updateProject }) => {
-  const calculateTotalCalculated = (receipt: Receipt) => {
-    let subtotal = 0;
-    receipt.items.forEach(item => {
-      Object.values(item.splits).forEach(amt => {
-        subtotal += amt;
-      });
-    });
-    const tax = subtotal * (receipt.taxPercentage / 100);
-    return subtotal + tax;
-  };
-
   const receiptDiffs = project.receipts.map(receipt => {
-    const calculated = calculateTotalCalculated(receipt);
+    const calculated = calculateReceiptCalculatedTotal(receipt);
     const diff = calculated - (receipt.expectedTotal || 0);
     return { receipt, calculated, diff, isMatch: Math.abs(diff) < 0.01 };
   });
 
   const hasErrors = receiptDiffs.some(r => !r.isMatch);
-  const allMatch = project.receipts.length > 0 && receiptDiffs.every(r => r.isMatch);
 
   return (
     <div className="bg-[#09090b] rounded-2xl p-5 border border-zinc-800 shadow-2xl">
@@ -38,7 +27,7 @@ export const ValidationTable: React.FC<ValidationTableProps> = ({ project, updat
               <th className="p-3 font-medium border-b border-zinc-800">Receipt</th>
               <th className="p-3 font-medium border-b border-zinc-800 text-right">Expected</th>
               <th className="p-3 font-medium border-b border-zinc-800 text-right">Actual</th>
-              {!allMatch && <th className="p-3 font-medium border-b border-zinc-800 text-right">Diff</th>}
+              {hasErrors && <th className="p-3 font-medium border-b border-zinc-800 text-right">Diff</th>}
             </tr>
           </thead>
           <tbody>
@@ -69,7 +58,7 @@ export const ValidationTable: React.FC<ValidationTableProps> = ({ project, updat
                   <td className={`p-3 text-right font-mono ${isMatch ? 'text-green-500' : 'text-red-400'}`}>
                     {calculated.toFixed(2)}
                   </td>
-                  {!allMatch && (
+                  {hasErrors && (
                     <td className={`p-3 text-right font-mono text-xs ${isMatch ? 'text-zinc-500' : 'text-red-400'}`}>
                       <div className="flex items-center justify-end gap-2">
                         <span>{isMatch ? '—' : (diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2))}</span>

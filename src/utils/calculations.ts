@@ -34,3 +34,12 @@ export function calculateGrandTotals(
 
   return grandTotals;
 }
+
+// Sum of all splits across all friends + tax — used to validate against the printed receipt total.
+export function calculateReceiptCalculatedTotal(receipt: Receipt): number {
+  let subtotal = 0;
+  receipt.items.forEach(item => {
+    Object.values(item.splits).forEach(amt => { subtotal += amt; });
+  });
+  return subtotal + subtotal * (receipt.taxPercentage / 100);
+}
