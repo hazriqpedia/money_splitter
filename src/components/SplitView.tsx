@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
 import { useProject } from '../store/useProject';
-import { ArrowLeft, Camera, Download } from 'lucide-react';
+import { ArrowLeft, Camera, Download, Pencil } from 'lucide-react';
 import { BreakdownTable } from './BreakdownTable';
 import { ValidationTable } from './ValidationTable';
 import { ExportView } from './ExportView';
@@ -17,8 +17,28 @@ const SAFARI_DOWNLOAD_DELAY_MS = 800;
 export const SplitView = () => {
   const { activeProject, setActiveProject, updateProject } = useProject();
   const exportRef = useRef<HTMLDivElement>(null);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [draftName, setDraftName] = useState('');
 
   if (!activeProject) return null;
+
+  const startEditingName = () => {
+    setDraftName(activeProject.name);
+    setIsEditingName(true);
+  };
+
+  const commitName = () => {
+    const trimmed = draftName.trim();
+    if (trimmed && trimmed !== activeProject.name) {
+      updateProject({ ...activeProject, name: trimmed });
+    }
+    setIsEditingName(false);
+  };
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') commitName();
+    if (e.key === 'Escape') setIsEditingName(false);
+  };
 
   const triggerDownload = (href: string, filename: string) => {
     const link = document.createElement('a');
@@ -65,7 +85,25 @@ export const SplitView = () => {
           >
             <ArrowLeft size={18} />
           </button>
-          <h1 className="text-lg font-medium text-zinc-100">{activeProject.name}</h1>
+          {isEditingName ? (
+            <input
+              autoFocus
+              size={Math.max(draftName.length, 8)}
+              value={draftName}
+              onChange={(e) => setDraftName(e.target.value)}
+              onBlur={commitName}
+              onKeyDown={handleNameKeyDown}
+              className="text-lg font-medium text-zinc-100 bg-transparent border-b border-zinc-600 focus:border-zinc-400 focus:outline-none transition-colors"
+            />
+          ) : (
+            <button
+              onClick={startEditingName}
+              className="group flex items-center gap-2 text-lg font-medium text-zinc-100 hover:text-white transition-colors"
+            >
+              {activeProject.name}
+              <Pencil size={13} className="text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+          )}
         </div>
         <div className="flex gap-3">
           <button

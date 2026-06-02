@@ -36,9 +36,12 @@ export const ValidationTable: React.FC<ValidationTableProps> = ({ project, updat
                 <td colSpan={3} className="p-6 text-center text-zinc-600 text-xs">No receipts added yet</td>
               </tr>
             ) : (
-              receiptDiffs.map(({ receipt, calculated, diff, isMatch }) => (
+              receiptDiffs.map(({ receipt, calculated, diff, isMatch }, index) => (
                 <tr key={receipt.id} className={`border-b border-zinc-800 last:border-0 ${isMatch ? 'bg-zinc-900/20' : 'bg-red-950/20'}`}>
-                  <td className="p-3 text-zinc-300 font-medium">{receipt.name || 'Unnamed'}</td>
+                  <td className="p-3 text-zinc-300 font-medium">
+                    <span className="text-zinc-600 font-mono text-xs mr-2">#{index + 1}</span>
+                    {receipt.name || 'Unnamed'}
+                  </td>
                   <td className="p-3 text-right">
                     <input
                       type="number"

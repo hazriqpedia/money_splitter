@@ -155,13 +155,13 @@ describe('localStorage persistence', () => {
     expect(result.current.projects[0].name).toBe('From Storage');
   });
 
-  it('restores activeProjectId from localStorage on mount', () => {
+  it('restores activeProjectId from URL hash on mount', () => {
     const saved: Project[] = [{
       id: 'active-id', name: 'Was Active', date: new Date().toISOString(),
       friends: [], receipts: [],
     }];
     localStorage.setItem('moneySplitter_projects', JSON.stringify(saved));
-    localStorage.setItem('moneySplitter_activeProjectId', 'active-id');
+    window.location.hash = 'active-id';
     const { result } = renderHook(() => useProject(), { wrapper });
     expect(result.current.activeProject?.name).toBe('Was Active');
   });

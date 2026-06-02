@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import type { Project } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import { ProjectContext } from './context';
+import { navigate } from '../utils/navigate';
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem('moneySplitter_projects');
     return saved ? JSON.parse(saved) : [];
   });
-  const [activeProjectId, setActiveProjectId] = useState<string | null>(() => {
-    return localStorage.getItem('moneySplitter_activeProjectId');
+  const [activeProjectId, setActiveProjectIdState] = useState<string | null>(() => {
+    return window.location.hash.slice(1) || null;
   });
 
   useEffect(() => {
@@ -17,12 +18,17 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, [projects]);
 
   useEffect(() => {
-    if (activeProjectId) {
-      localStorage.setItem('moneySplitter_activeProjectId', activeProjectId);
-    } else {
-      localStorage.removeItem('moneySplitter_activeProjectId');
-    }
-  }, [activeProjectId]);
+    const handlePopState = () => {
+      setActiveProjectIdState(window.location.hash.slice(1) || null);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const setActiveProjectId = (id: string | null) => {
+    navigate(id ? '#' + id : location.pathname);
+    setActiveProjectIdState(id);
+  };
 
   const activeProject = projects.find(p => p.id === activeProjectId) || null;
 

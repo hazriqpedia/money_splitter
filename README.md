@@ -12,6 +12,10 @@ A minimal, privacy-first bill splitter that runs entirely in your browser. Perfe
 
 ---
 
+![Money Splitter screenshot](docs/screenshot.png)
+
+---
+
 ## Features
 
 - **Item-by-item splitting** — assign each line item to one person, split it evenly, or use any custom split across friends
@@ -24,13 +28,22 @@ A minimal, privacy-first bill splitter that runs entirely in your browser. Perfe
 
 ---
 
-## Demo
+## Using the app
 
-> Add a screenshot or GIF here — e.g. `![Money Splitter screenshot](docs/screenshot.png)`
+No installation needed — just open it in your browser and start splitting.
+
+1. **Create a project** — give it a name (e.g. "Ipoh Trip 2026") from the Dashboard.
+2. **Add friends** — type each person's name and press Enter to add them as a column.
+3. **Add receipts** — create one receipt per physical bill. Set the printed total and tax percentage.
+4. **Assign costs** — for each line item, type how much each person owes. Leave it blank if they didn't order it.
+5. **Check the validation panel** — the right-hand panel compares the receipt's printed total against your entered amounts. Aim for a zero difference.
+6. **Export** — hit **Split Project!** to download a PNG summary (ready to drop into a group chat) and a JSON backup.
+
+> **Tip:** your projects are saved automatically in your browser. Come back any time and everything will still be there.
 
 ---
 
-## Quickstart
+## Quickstart (for developers)
 
 ```bash
 # Install dependencies
@@ -39,8 +52,6 @@ npm install
 # Start dev server (http://localhost:5173)
 npm run dev
 ```
-
-Create a project → add friends → add receipts → assign item costs → click **Split Project!** to export a PNG.
 
 ```bash
 # Production build
@@ -110,4 +121,4 @@ Issues and PRs are welcome. Please keep changes minimal and consistent with the 
 
 ---
 
-Made with &lt;3 in KL by [@Hazriq](https://github.com/hazriqpedia)
+Made with &lt;3 in KL by [@Hazriq](https://github.com/hazriqpedia). Also, thanks Claude for the help.
