@@ -81,6 +81,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
       items: [{ id: uuidv4(), name: 'Item 1', splits: {} }]
     };
     updateProject({ ...project, receipts: [...project.receipts, newReceipt] });
+    pendingFocusId.current = newReceipt.id;
   };
 
   const removeReceipt = (id: string) => {
@@ -236,6 +237,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
                             type="text"
                             value={receipt.name}
                             onChange={(e) => updateReceipt({ ...receipt, name: e.target.value })}
+                            data-focus-id={receipt.id}
                             className="bg-transparent outline-none flex-1 font-medium text-zinc-300 placeholder-zinc-600 focus:text-white"
                             placeholder="Receipt Name"
                           />
@@ -301,7 +303,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
                         {/* Add Item Row */}
                         <tr className="border-b border-zinc-800/50 bg-[#09090b]">
                           <td colSpan={project.friends.length + 2} className="py-1.5 pl-6">
-                            <button onClick={() => addItem(receipt.id)} className="text-xs font-medium text-zinc-500 hover:text-zinc-300 flex items-center gap-1 transition-colors">
+                            <button onClick={() => addItem(receipt.id, true)} className="text-xs font-medium text-zinc-500 hover:text-zinc-300 flex items-center gap-1 transition-colors">
                               <Plus size={12}/> Add item
                             </button>
                           </td>
