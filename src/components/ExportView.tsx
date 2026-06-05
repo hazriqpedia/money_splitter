@@ -47,7 +47,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
           {project.name}
         </div>
         <div style={{ fontSize: '12px', color: '#71717a', marginTop: '3px' }}>
-          {new Date(project.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+          {new Date(project.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
         </div>
         {allTags.length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>

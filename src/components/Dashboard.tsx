@@ -193,8 +193,8 @@ export const Dashboard = () => {
                     <span className="text-zinc-700">·</span>
                     <span>
                       {new Date(project.date).toLocaleDateString(undefined, {
+                        day: "numeric",
                         month: "short",
-                        year: "numeric",
                       })}
                     </span>
                   </div>

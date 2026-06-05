@@ -139,7 +139,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
         <div className="flex justify-between items-end mb-3">
           <div>
             <h2 className="text-2xl font-light tracking-tight text-zinc-100">{project.name}</h2>
-            <div className="text-zinc-500 text-sm mt-1">{new Date(project.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</div>
+            <div className="text-zinc-500 text-sm mt-1">{new Date(project.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
