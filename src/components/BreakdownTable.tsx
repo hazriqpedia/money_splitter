@@ -19,7 +19,8 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
     if (!pendingFocusId.current) return;
     const id = pendingFocusId.current;
     pendingFocusId.current = null;
-    document.querySelector<HTMLInputElement>(`[data-focus-id="${id}"]`)?.focus();
+    const el = document.querySelector<HTMLInputElement>(`[data-focus-id="${id}"]`);
+    if (el) { el.focus(); el.select(); }
   });
 
   const toggleCollapse = (id: string) => {
@@ -265,6 +266,12 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
                                 type="text"
                                 value={item.name}
                                 onChange={(e) => updateItemName(receipt.id, item.id, e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addItem(receipt.id, true);
+                                  }
+                                }}
                                 data-focus-id={item.id}
                                 className="bg-transparent outline-none w-full text-zinc-300 placeholder-zinc-700"
                                 placeholder="Item Name"

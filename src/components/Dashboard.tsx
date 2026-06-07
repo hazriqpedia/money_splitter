@@ -122,7 +122,7 @@ export const Dashboard = () => {
             No projects yet.
           </div>
         ) : (
-          projects.map((project) => {
+          [...projects].reverse().map((project) => {
             const grandTotals = calculateGrandTotals(
               project.receipts,
               project.friends,
