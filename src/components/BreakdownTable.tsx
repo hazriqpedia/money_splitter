@@ -49,6 +49,7 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
   const addFriend = () => {
     const newFriend = { id: uuidv4(), name: `Friend ${project.friends.length + 1}` };
     updateProject({ ...project, friends: [...project.friends, newFriend] });
+    pendingFocusId.current = newFriend.id;
   };
 
   const removeFriend = (id: string) => {
@@ -171,18 +172,19 @@ export const BreakdownTable: React.FC<BreakdownTableProps> = ({ project, updateP
 
       {/* Table scrolls on both axes; sticky thead and sticky left-0 cells work within this container */}
       <div className="overflow-auto max-h-[60vh]">
-        <table className="w-full text-left border-collapse min-w-max">
+        <table className="text-left border-collapse min-w-max w-max">
           <thead className="sticky top-0 z-20">
             <tr>
               <th className="px-3 py-2 bg-zinc-900 text-zinc-500 font-medium rounded-tl-xl w-[240px] border-b border-zinc-800 sticky left-0 z-30 text-xs uppercase tracking-wider">
                 Item
               </th>
               {project.friends.map((f) => (
-                <th key={f.id} className="px-3 py-2 bg-zinc-900 text-zinc-200 font-medium min-w-[120px] relative group border-b border-zinc-800 border-l border-zinc-700">
+                <th key={f.id} className="px-3 py-2 bg-zinc-900 text-zinc-200 font-medium min-w-[80px] relative group border-b border-zinc-800 border-l border-zinc-700">
                   <input
                     type="text"
                     value={f.name}
                     onChange={(e) => updateFriendName(f.id, e.target.value)}
+                    data-focus-id={f.id}
                     className="bg-transparent outline-none w-full text-center placeholder-zinc-600 focus:text-white"
                     placeholder="Name"
                   />

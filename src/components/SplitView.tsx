@@ -8,7 +8,7 @@ import { ExportView } from './ExportView';
 
 // ─── Export config ────────────────────────────────────────────────────────────
 const EXPORT_PNG = true;
-const EXPORT_JSON_WITH_PNG = true;
+const EXPORT_JSON_WITH_PNG = import.meta.env.VITE_EXPORT_JSON_WITH_PNG === 'true';
 // Safari blocks simultaneous programmatic downloads. A short delay between
 // the PNG and JSON triggers lets Safari treat each as a separate user action.
 const SAFARI_DOWNLOAD_DELAY_MS = 800;

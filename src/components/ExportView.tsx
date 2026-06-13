@@ -13,6 +13,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
     ...(project.tags || []),
   ]));
   const grandTotals = calculateGrandTotals(project.receipts, project.friends);
+  const exportWidth = Math.max(520, 56 + 160 + project.friends.length * 110);
 
   return (
     // opacity:0 + pointerEvents:none keeps the element in the render tree
@@ -31,7 +32,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
         color: '#e4e4e7',
         background: '#09090b',
         padding: '28px',
-        width: '520px',
+        width: `${exportWidth}px`,
         boxSizing: 'border-box',
       }}
     >

@@ -58,6 +58,18 @@ export const Dashboard = () => {
     reader.readAsText(file);
   };
 
+  const handleExportAll = () => {
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(projects, null, 2));
+    const a = document.createElement("a");
+    a.setAttribute("href", dataStr);
+    a.setAttribute("download", "money_splitter_projects.json");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
   const exportProject = (project: Project, e: React.MouseEvent) => {
     e.stopPropagation();
     const dataStr =
@@ -104,16 +116,31 @@ export const Dashboard = () => {
 
       <div className="flex justify-between items-end mb-4 border-b border-zinc-800/50 pb-4">
         <h2 className="text-lg font-medium text-zinc-300">Your Projects</h2>
-        <label className="cursor-pointer text-zinc-400 hover:text-zinc-200 text-sm flex items-center gap-2 transition-colors">
-          <Upload size={16} />
-          Import JSON
-          <input
-            type="file"
-            accept=".json"
-            className="hidden"
-            onChange={handleFileUpload}
-          />
-        </label>
+        <div className="flex items-center gap-3">
+          {projects.length > 0 && (
+            <button
+              onClick={handleExportAll}
+              className="group cursor-pointer text-zinc-400 hover:text-zinc-200 text-sm flex items-center gap-0 transition-colors"
+            >
+              <Download size={16} />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-25 group-hover:ml-2 transition-all duration-200 whitespace-nowrap">
+                Export
+              </span>
+            </button>
+          )}
+          <label className="group cursor-pointer text-zinc-400 hover:text-zinc-200 text-sm flex items-center gap-0 transition-colors">
+            <Upload size={16} />
+            <span className="max-w-0 overflow-hidden group-hover:max-w-25 group-hover:ml-2 transition-all duration-200 whitespace-nowrap">
+              Import
+            </span>
+            <input
+              type="file"
+              accept=".json"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+          </label>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
