@@ -21,6 +21,8 @@ VS Code quick launch — two options:
 - **Run & Debug** (`Cmd+Shift+D`): select `Dev Server + Chrome` compound — starts Vite and opens Chrome with full source-map debugging attached
 - **Tasks** (`Cmd+Shift+P → Tasks: Run Task`): `Dev Server` + `Open Dev in Safari` if you prefer Safari; `Preview Build` for a production preview
 
+**Ports are pinned, not Vite's defaults.** `vite.config.ts` sets `server.port: 5173` / `preview.port: 4173` with `strictPort: true`, so the dev server fails loudly instead of silently shifting ports if 5173 is taken — important since this app is meant to run alongside `money_personal` (pinned to 5174/4174) without either one's URL silently changing and breaking a bookmark.
+
 ## Stack
 
 - React 19, TypeScript 6, Vite 8
