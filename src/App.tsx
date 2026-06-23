@@ -36,7 +36,7 @@ const AppLayout = () => {
           onClick={() => setActiveProject(null)}
           className="text-base font-semibold tracking-tight text-zinc-100 hover:text-white transition-colors"
         >
-          bill-splitter
+          $ SPLITTER
         </button>
         <nav className="ml-auto">
           <button

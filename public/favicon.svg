@@ -1,17 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Dark rounded background -->
   <rect width="32" height="32" rx="7" fill="#18181b"/>
-  <!-- Receipt body with zigzag bottom (torn receipt edge) -->
-  <path fill="#f4f4f5" d="M8 3H24V25L22 27L20 25L18 27L16 25L14 27L12 25L10 27L8 25Z"/>
-  <!-- Receipt title / header row -->
-  <rect x="11" y="7" width="10" height="2.5" rx="1.25" fill="#27272a"/>
-  <!-- Vertical column divider — references the per-person split columns -->
-  <rect x="16" y="11.5" width="0.75" height="9" fill="#a1a1aa"/>
-  <!-- Item rows: left person, right person -->
-  <rect x="11" y="12.5" width="3.5" height="1.5" rx=".75" fill="#52525b"/>
-  <rect x="17" y="12.5" width="3.5" height="1.5" rx=".75" fill="#52525b"/>
-  <rect x="11" y="16"   width="3.5" height="1.5" rx=".75" fill="#52525b"/>
-  <rect x="17" y="16"   width="3"   height="1.5" rx=".75" fill="#52525b"/>
-  <!-- Total row -->
-  <rect x="11" y="22"   width="10"  height="1.5" rx=".75" fill="#27272a"/>
+  <!-- Top half of dollar sign, shifted up to open a gap -->
+  <path d="M16 4.5V11.5" stroke="#f4f4f5" stroke-width="2" stroke-linecap="round"/>
+  <path d="M20 9C20 7.067 18.21 5.5 16 5.5C13.79 5.5 12 7.067 12 9C12 10.933 13.79 12.5 16 12.5" stroke="#f4f4f5" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- Bottom half of dollar sign, shifted down -->
+  <path d="M16 19.5V27.5" stroke="#f4f4f5" stroke-width="2" stroke-linecap="round"/>
+  <path d="M16 15.5C18.21 15.5 20 17.067 20 19C20 20.933 18.21 22.5 16 22.5C13.79 22.5 12 20.933 12 19" stroke="#f4f4f5" stroke-width="2" stroke-linecap="round" fill="none"/>
 </svg>

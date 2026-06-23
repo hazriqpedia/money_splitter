@@ -38,7 +38,7 @@ export const ExportView: React.FC<ExportViewProps> = ({ project, exportRef }) =>
     >
       {/* Brand */}
       <div style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#52525b', marginBottom: '20px', fontWeight: 600 }}>
-        bill-splitter
+        $ SPLITTER
         <span style={{ fontStyle: 'italic', letterSpacing: '0.5px', color: '#3f3f46', fontWeight: 400, textTransform: 'none', marginLeft: '8px' }}>· by hzrq</span>
       </div>
 

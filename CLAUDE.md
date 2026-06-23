@@ -6,6 +6,8 @@ A browser-only bill-splitting tool. No backend, no auth. Everything runs in Reac
 
 **Minimal, dark, and modern.** The entire UI is built on a `#09090b` (zinc-950) background. Surfaces use `zinc-900` / `zinc-800`. Text hierarchy: `zinc-100` (primary) → `zinc-300` (secondary) → `zinc-500` (muted). Interactive elements use subtle hover states — no heavy shadows, no gradients, no color accents. The only "bright" element is the white `bg-zinc-100` primary action button. When in doubt: less is more.
 
+This visual language is shared with its sibling app, `money_personal` (see Dev commands below for the port-pinning relationship) — both intentionally use the same zinc dark theme for a consistent feel across the two tools.
+
 ## Dev commands
 
 | Command | Purpose |

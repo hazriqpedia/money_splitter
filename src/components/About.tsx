@@ -32,7 +32,7 @@ export function About() {
       <div className="space-y-10">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-100 mb-3">
-            bill-splitter
+            $ SPLITTER
           </h1>
           <p className="text-zinc-400 leading-relaxed text-sm">
             A browser-only tool for splitting bills with friends. No accounts,
